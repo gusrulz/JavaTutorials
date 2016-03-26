@@ -14,6 +14,7 @@ import javax.swing.JPanel;
  * @author www.gametutorial.net
  */
 
+@SuppressWarnings("serial")
 public abstract class Canvas extends JPanel implements KeyListener, MouseListener {
 	
 	// Keyboard states - Here are stored states for keyboard keys - is it down or not.
@@ -71,6 +72,12 @@ public abstract class Canvas extends JPanel implements KeyListener, MouseListene
 	// Methods of the keyboard listener.
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
+		keyboardState[e.getKeyCode()] = true;
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e) {
 		
 		keyboardState[e.getKeyCode()] = false;
 		keyReleasedFramework(e);

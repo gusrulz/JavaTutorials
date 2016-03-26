@@ -237,6 +237,56 @@ public class PlayerHelicopter {
 		}
 		
 		// Moving on the y coordinate.
+		if(Canvas.keyboardKeyState(KeyEvent.VK_W) || Canvas.keyboardKeyState(KeyEvent.VK_UP)) {
+			
+			movingYspeed -= acceleratingYspeed;
+		}
+		else if(Canvas.keyboardKeyState(KeyEvent.VK_S) || Canvas.keyboardKeyState(KeyEvent.VK_DOWN)) {
+			
+			movingYspeed += acceleratingYspeed;
+		}
+		else {
+			
+			if(movingYspeed < 0) {
+				
+				movingYspeed += stoppingYspeed;
+			}
+			else if(movingYspeed > 0) {
+				
+				movingYspeed -= stoppingYspeed;
+			}
+		}
+	}
+	
+	/**
+	 * Updates position of helicopter, animations.
+	 */
+	public void Update() {
 		
+		// Move helicopter and its propellers.
+		xCoordinate += movingXspeed;
+		yCoordinate += movingYspeed;
+		helicopterFrontPropellerAnim.changeCoordinates(xCoordinate + offsetXFrontPropeller, yCoordinate + offsetYFrontPropeller);
+		helicopterRearPropellerAnim.changeCoordinates(xCoordinate + offsetXRearPropeller, yCoordinate + offsetYRearPropeller);
+		
+		// Change position of the rocket holder
+		this.rocketHolderXcoordinate = this.xCoordinate + this.offsetXRocketHolder;
+		this.rocketHolderYcoordinate = this.yCoordinate + this.offsetYRocketHolder;
+		
+		// Move the machine gun with helicopter.
+		this.machineGunXcoordinate = this.xCoordinate + this.offsetXMachineGun;
+		this.machineGunYcoordinate = this.yCoordinate + this.offsetYMachineGun;
+	}
+	
+	/**
+	 * Draws helicopter to the screen.
+	 * 
+	 * @param g2d Graphics2D
+	 */
+	public void Draw(Graphics2D g2d) {
+		
+		helicopterFrontPropellerAnim.Draw(g2d);
+		helicopterRearPropellerAnim.Draw(g2d);
+		g2d.drawImage(helicopterBodyImg, xCoordinate, yCoordinate, null);
 	}
 }

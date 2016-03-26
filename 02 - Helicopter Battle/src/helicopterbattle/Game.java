@@ -32,7 +32,7 @@ public class Game {
 	private ArrayList<EnemyHelicopter> enemyHelicopterList = new ArrayList<EnemyHelicopter>();
 	
 	// Explosions
-	private ArrayList<Animation> explosionsList;
+	private ArrayList<Animation> explosionList;
 	private BufferedImage explosionAnimImg;
 	
 	// List of all the machinegun bullets.
@@ -173,7 +173,7 @@ public class Game {
 		}
 		catch (IOException ex){
 			
-			Logger.getLogger(Game.class.getName()).log(Level.SEVERE null, ex);
+			Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		
 		// Now that we have images we initialize moving images.
@@ -200,7 +200,7 @@ public class Game {
 		bulletsList.clear();
 		rocketsList.clear();
 		rocketSmokeList.clear();
-		explosionsList.clear();
+		explosionList.clear();
 		
 		// Statistics
 		runAwayEnemies = 0;
@@ -217,7 +217,7 @@ public class Game {
 		
 		/* Player */
 		// When player is destroyed and all explosions are finished showing we change game status.
-		if(!isPlayerAlive() && explosionsList.isEmpty()) {
+		if(!isPlayerAlive() && explosionList.isEmpty()) {
 			
 			Framework.gameState = Framework.GameState.GAMEOVER;
 			return; // If player is destroyed, we don't need to do anything below.
@@ -229,7 +229,7 @@ public class Game {
 		   player.numberOfRockets <= 0 &&
 		   bulletsList.isEmpty() &&
 		   rocketsList.isEmpty() &&
-		   explosionsList.isEmpty()) {
+		   explosionList.isEmpty()) {
 			
 			Framework.gameState = Framework.GameState.GAMEOVER;
 			return;
@@ -255,7 +255,7 @@ public class Game {
 		updateRocketSmoke(gameTime);
 		
 		/* Enemies */
-		createEnemyHelicopter(gameTime);
+		//createEnemyHelicopter(gameTime);
 		updateEnemies();
 		
 		/* Explosions */
@@ -302,9 +302,9 @@ public class Game {
 		}
 		
 		// Draw all explosions.
-		for(int i = 0; i < explosionsList.size(); i++) {
+		for(int i = 0; i < explosionList.size(); i++) {
 			
-			explosionsList.get(i).Draw(g2d);
+			explosionList.get(i).Draw(g2d);
 		}
 		
 		// Draw statistics
@@ -312,8 +312,8 @@ public class Game {
 		g2d.setColor(Color.darkGray);
 		
 		g2d.drawString(formatTime(gameTime), Framework.frameWidth / 2 - 45, 21);
-		g2d.drawString("DESTROYED: " + destroyedEnemies, 10, 21);
-		g2d.drawString("RUN-AWAY: "  + runAwayEnemies, 10, 21);
+		g2d.drawString("DESTROYED: " + destroyedEnemies, 10, 41);
+		g2d.drawString("RUN-AWAY: "  + runAwayEnemies, 10, 61);
 		g2d.drawString("ROCKETS: "   + player.numberOfRockets, 10, 81);
 		g2d.drawString("AMMO: "      + player.amountOfAmmo, 10, 101);
 		
@@ -416,7 +416,7 @@ public class Game {
 		
 		if(sec <= 9) {
 			
-			minString = "0" + Integer.toString(sec);
+			secString = "0" + Integer.toString(sec);
 		}
 		else {
 			
@@ -533,14 +533,14 @@ public class Game {
 				for(int exNum = 0; exNum < 3; exNum++) {
 					
 					Animation expAnim = new Animation(explosionAnimImg, 134, 134, 12, 45, false, player.xCoordinate + exNum * 60, player.yCoordinate - random.nextInt(100), exNum * 200 + random.nextInt(100));
-					explosionsList.add(expAnim);
+					explosionList.add(expAnim);
 				}
 				
 				// Add explosion of enemy helicopter.
 				for(int exNum = 0; exNum < 3; exNum++) {
 					
 					Animation expAnim = new Animation(explosionAnimImg, 134, 134, 12, 45, false, eh.xCoordinate + exNum * 60, eh.yCoordinate - random.nextInt(100), exNum * 200 + random.nextInt(100));
-					explosionsList.add(expAnim);
+					explosionList.add(expAnim);
 				}
 				
 				// Because player crashed with enemy the game will be over so we don't need to check other enemies.
@@ -552,7 +552,7 @@ public class Game {
 				
 				// Add explosion of helicopter.
 				Animation expAnim = new Animation(explosionAnimImg, 134, 134, 12, 45, false, eh.xCoordinate, eh.yCoordinate - explosionAnimImg.getHeight() / 3, 0);
-				explosionsList.add(expAnim);
+				explosionList.add(expAnim);
 				
 				// Increase the destroyed enemies counter.
 				destroyedEnemies++;
@@ -638,7 +638,7 @@ public class Game {
 			
 			// Moves the rocket.
 			rocket.Update();// Checks if it is left the screen.
-			if(rocket.hasLeftScreen()) {
+			if(rocket.hasItLeftScreen()) {
 				
 				rocketsList.remove(i);
 				continue;
@@ -673,7 +673,7 @@ public class Game {
 		
 		boolean didItHitEnemy = false;
 		
-		Rectangle rocketRectangle = new Rectangle(rocket.xCoordinate, rocket.yCoordinate, 2, Rocket.rocketImg.getHiehgt());
+		Rectangle rocketRectangle = new Rectangle(rocket.xCoordinate, rocket.yCoordinate, 2, Rocket.rocketImg.getHeight());
 		
 		// Go through all enemies
 		for(int j = 0; j < enemyHelicopterList.size(); j++) {
@@ -709,10 +709,10 @@ public class Game {
 		
 		for(int i = 0; i < rocketSmokeList.size(); i++) {
 			
-			RocketSmoke rs = rocketSmokeLst.get(i);
+			RocketSmoke rs = rocketSmokeList.get(i);
 			
 			// Is it time to remove the smoke?
-			if(rs.didSmokeDisappear(gameTime)) {
+			if(rs.hasSmokeDisappeared(gameTime)) {
 				
 				rocketSmokeList.remove(i);
 			}
@@ -727,12 +727,12 @@ public class Game {
 	 */
 	private void updateExplosions() {
 		
-		for(int i = 0; i < explosionsList.size(); i++) {
+		for(int i = 0; i < explosionList.size(); i++) {
 			
 			// If the animation is over we remove it from the list.
-			if(!explosionsList.get(i).active) {
+			if(!explosionList.get(i).active) {
 				
-				explosionsList.remove(i);
+				explosionList.remove(i);
 			}
 		}
 	}

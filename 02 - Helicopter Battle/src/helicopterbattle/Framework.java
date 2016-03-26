@@ -128,7 +128,7 @@ public class Framework extends Canvas {
 			URL skyColorImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/sky_color.jpg");
 			skyColorImg = ImageIO.read(skyColorImgUrl);
 			
-			URL gameTitleImgUrl = this.getClass().getResource("/helicopterbattle/resources/imgages/helicopter_battle_title.png");
+			URL gameTitleImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/helicopter_battle_title.png");
 			gameTitleImg = ImageIO.read(gameTitleImgUrl);
 			
 			URL cloudLayer1ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/cloud_layer_1.png");
@@ -248,7 +248,7 @@ public class Framework extends Canvas {
 				drawMenuBackground(g2d);
 				g2d.drawImage(gameTitleImg, frameWidth/2 - gameTitleImg.getWidth()/2, frameHeight/4, null);
 				g2d.setColor(Color.black);
-				g2d.drawString("Use w, a, d or arrow keys to move the helicopter.", frameWidth / 2 - 117, frameHeight / 2 - 30);
+				g2d.drawString("Use w, a, s, d or arrow keys to move the helicopter.", frameWidth / 2 - 117, frameHeight / 2 - 30);
 				g2d.drawString("Use left mouse button to fire bullets and right mouse button to fire rockets.", frameWidth / 2 - 180, frameHeight / 2);
 				g2d.drawString("Press any key to start the game or ESC to exit.", frameWidth / 2 - 114, frameHeight / 2 + 30);
 			break;
@@ -362,11 +362,5 @@ public class Framework extends Canvas {
         g2d.drawImage(menuBorderImg,  0, 0, Framework.frameWidth, Framework.frameHeight, null);
         g2d.setColor(Color.white);
         g2d.drawString("WWW.GAMETUTORIAL.NET", 7, frameHeight - 5);
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 }
